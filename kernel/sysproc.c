@@ -95,6 +95,12 @@ sys_kill(void)
   return kkill(pid);
 }
 
+uint64
+sys_headcount(void)
+{
+  return headcount(myproc());
+}
+
 // return how many clock tick interrupts have occurred
 // since start.
 uint64

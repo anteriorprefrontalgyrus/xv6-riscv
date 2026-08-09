@@ -658,6 +658,21 @@ either_copyin(void *dst, int user_src, uint64 src, uint64 len)
   }
 }
 
+int
+headcount(struct proc *parent)
+{
+  struct proc *p;
+  int n = 0;
+
+  for(p = proc; p < &proc[NPROC]; p++){
+    acquire(&p->lock);
+    if(p->parent == parent && p->state != UNUSED && p->state != ZOMBIE)
+      n++;
+    release(&p->lock);
+  }
+  return n;
+}
+
 // Print a process listing to console.  For debugging.
 // Runs when user types ^P on console.
 // No lock to avoid wedging a stuck machine further.
